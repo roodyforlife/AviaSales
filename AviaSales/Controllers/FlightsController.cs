@@ -49,7 +49,7 @@ namespace AviaSales.Controllers
 
             if (departureDateTo.Year == 1)
             {
-                departureDateTo = DateTime.Now;
+                departureDateTo = DateTime.Now.AddDays(1);
             }
 
             dataBaseContext = dataBaseContext.Where(x => x.DepartureDate >= departureDateFrom);

@@ -20,7 +20,7 @@ namespace AviaSales.Controllers
         public IActionResult Request(string request)
         {
             // string connectionString = $"Server=DESKTOP-I75L3P7;Database=AviaSales;Trusted_Connection=True;Encrypt=False;";
-            string connectionString = $"Server=DESKTOP-I75L3P7;Database=AviaSales;Trusted_Connection=True;Encrypt=False;";
+            string connectionString = $"Server=DESKTOP-KIV92L3;Database=AviaSales;Trusted_Connection=True;Encrypt=False;";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

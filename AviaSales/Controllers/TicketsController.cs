@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AviaSales.DataBase;
 using AviaSales.Models;
 using AviaSales.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace AviaSales.Controllers
 {
@@ -56,6 +58,65 @@ namespace AviaSales.Controllers
                 dataBaseContext = dataBaseContext.Where(x => x.Flight.Plane.Name.Contains(planeName));
             }
 
+            if (dateTo.Year == 1)
+            {
+                dateTo = DateTime.Now.AddDays(1);
+            }
+
+            dataBaseContext = dataBaseContext.Where(x => x.PurchaseDate >= dateFrom);
+            dataBaseContext = dataBaseContext.Where(x => x.PurchaseDate <= dateTo);
+
+            switch (sort)
+            {
+                case TicketSort.UserEmailAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.User.Email);
+                    break;
+                case TicketSort.UserEmailDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.User.Email);
+                    break;
+                case TicketSort.FlightNumberAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.Flight.FlightNumber);
+                    break;
+                case TicketSort.FlightNumberDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.Flight.FlightNumber);
+                    break;
+                case TicketSort.ClassNameAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.Class.Name);
+                    break;
+                case TicketSort.ClassNameDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.Class.Name);
+                    break;
+                case TicketSort.DateAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.PurchaseDate);
+                    break;
+                case TicketSort.DateDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.PurchaseDate);
+                    break;
+                default:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.SeatNumber);
+                    break;
+            }
+
+            ViewBag.Sort = (List<SelectListItem>)Enum.GetValues(typeof(TicketSort)).Cast<TicketSort>()
+               .Select(x => new SelectListItem
+               {
+                   Text = x.GetType()
+           .GetMember(x.ToString())
+           .FirstOrDefault()
+           .GetCustomAttribute<DisplayAttribute>()?
+           .GetName(),
+                   Value = x.ToString(),
+                   Selected = (x == sort)
+               }).ToList();
+
+            ViewBag.FlightNumber = flightNumber;
+            ViewBag.SeatNumber = seatNumber;
+            ViewBag.UserEmail = userEmail;
+            ViewBag.ClassName = className;
+            ViewBag.PlaneName = planeName;
+            ViewBag.DateFrom = dateFrom;
+            ViewBag.DateTo = dateTo;
+
             return View(await dataBaseContext.ToListAsync());
         }
 
@@ -102,6 +163,11 @@ namespace AviaSales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TicketId,PurchaseDate,SeatNumber,UserId,FlightId,ClassId")] Ticket ticket)
         {
+            if (_context.Users.FirstOrDefault(x => x.UserId == ticket.UserId).IsBanned)
+            {
+                ModelState.AddModelError("UserId", "This user has been banned");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(ticket);
@@ -143,6 +209,11 @@ namespace AviaSales.Controllers
             if (id != ticket.TicketId)
             {
                 return NotFound();
+            }
+
+            if (_context.Users.FirstOrDefault(x => x.UserId == ticket.UserId).IsBanned)
+            {
+                ModelState.AddModelError("UserId", "This user has been banned");
             }
 
             if (ModelState.IsValid)

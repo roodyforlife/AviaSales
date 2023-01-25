@@ -56,6 +56,11 @@ namespace AviaSales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FoodId,Name,Cost")] Food food)
         {
+            if (_context.Foods.Where(x => x.Name == food.Name).Count() != 0)
+            {
+                ModelState.AddModelError("Name", "Name already taken");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(food);
@@ -91,6 +96,11 @@ namespace AviaSales.Controllers
             if (id != food.FoodId)
             {
                 return NotFound();
+            }
+
+            if (_context.Foods.Where(x => x.Name == food.Name).Count() != 0)
+            {
+                ModelState.AddModelError("Name", "Name already taken");
             }
 
             if (ModelState.IsValid)

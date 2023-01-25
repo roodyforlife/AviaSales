@@ -98,6 +98,8 @@ namespace AviaSales.Controllers
             }
 
             var airport = await _context.Airports
+                .Include(x => x.Departures)
+                .Include(x => x.Arrivals)
                 .FirstOrDefaultAsync(m => m.AirportId == id);
             if (airport == null)
             {
@@ -120,6 +122,11 @@ namespace AviaSales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AirportId,Name,State,City,Address,Postcode")] Airport airport)
         {
+            if (_context.Airports.Where(x => x.Name == airport.Name).Count() != 0)
+            {
+                ModelState.AddModelError("Name", "Name already taken");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(airport);
@@ -155,6 +162,11 @@ namespace AviaSales.Controllers
             if (id != airport.AirportId)
             {
                 return NotFound();
+            }
+
+            if (_context.Airports.Where(x => x.Name == airport.Name).Count() != 0)
+            {
+                ModelState.AddModelError("Name", "Name already taken");
             }
 
             if (ModelState.IsValid)

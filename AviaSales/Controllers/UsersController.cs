@@ -57,6 +57,11 @@ namespace AviaSales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,Name,Email,Telephone,Age,IsMale,HomeAddress,IsBanned,RegistrationDate")] User user)
         {
+            if (_context.Users.Where(x => x.Email == user.Email).Count() != 0)
+            {
+                ModelState.AddModelError("Email", "Email already taken");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);

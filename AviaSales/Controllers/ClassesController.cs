@@ -56,6 +56,10 @@ namespace AviaSales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ClassId,Name")] Class @class)
         {
+            if (_context.Classes.Where(x => x.Name == @class.Name).Count() != 0)
+            {
+                ModelState.AddModelError("Name", "Name already taken");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(@class);
@@ -91,6 +95,11 @@ namespace AviaSales.Controllers
             if (id != @class.ClassId)
             {
                 return NotFound();
+            }
+
+            if (_context.Classes.Where(x => x.Name == @class.Name).Count() != 0)
+            {
+                ModelState.AddModelError("Name", "Name already taken");
             }
 
             if (ModelState.IsValid)
