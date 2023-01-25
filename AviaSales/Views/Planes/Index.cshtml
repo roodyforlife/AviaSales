@@ -11,11 +11,12 @@
 </p>
 
 <div class="form-group">
-    <a class="btn btn-primary" asp-action="Request" asp-route-request="Select Planes.Name as 'PLane name', SUM(TicketFoods.Quantity) from Planes
+    <a class="btn btn-primary" asp-action="Request" asp-route-request="Select Planes.Name as 'PLane name', FlightNumber, SUM(TicketFoods.Quantity) as 'Quantity' from Planes
+left join Flights on Flights.PlaneId = Planes.PlaneId
 left join Tickets on Tickets.PlaneId = Planes.PlaneId
 left join TicketFoods on TicketFoods.TicketId = Tickets.TicketId
 left join Foods on Foods.FoodId = TicketFoods.FoodId
-group by Planes.Name" asp-controller="Home">Запит на отримання літаків, де буде виведено назву літака, та кількість їжі, що замовили користвачі</a>
+group by Planes.Name, FlightNumber" asp-controller="Home">Запит на отримання літаків, де буде виведено назву літака, та кількість їжі, що замовили користвачі</a>
 </div>
 
 <table class="table">
