@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AviaSales.DataBase;
 using AviaSales.Models;
+using AviaSales.Enums;
 
 namespace AviaSales.Controllers
 {
@@ -20,14 +21,41 @@ namespace AviaSales.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string flightNumber, int seatNumber, string userEmail, string className,
+            string planeName, DateTime dateFrom, DateTime dateTo, TicketSort sort = TicketSort.SeatNumberAsc)
         {
-            var dataBaseContext = _context.Tickets
+            IQueryable<Ticket> dataBaseContext = _context.Tickets
                 .Include(t => t.Class)
                 .Include(t => t.Flight).ThenInclude(x => x.Plane)
                 .Include(x => x.Flight).ThenInclude(x => x.DepartureAirport)
                 .Include(x => x.Flight).ThenInclude(x => x.ArrivalAirport)
                 .Include(t => t.User);
+
+            if (!String.IsNullOrEmpty(flightNumber))
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.Flight.FlightNumber.Contains(flightNumber));
+            }
+
+            if (seatNumber != 0)
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.SeatNumber == seatNumber);
+            }
+
+            if (!String.IsNullOrEmpty(userEmail))
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.User.Email.Contains(userEmail));
+            }
+
+            if (!String.IsNullOrEmpty(className))
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.Class.Name.Contains(className));
+            }
+
+            if (!String.IsNullOrEmpty(planeName))
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.Flight.Plane.Name.Contains(planeName));
+            }
+
             return View(await dataBaseContext.ToListAsync());
         }
 

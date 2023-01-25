@@ -10,6 +10,53 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<form asp-action="Index" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Seat number</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Default" value="@ViewBag.SeatNumber" name="seatNumber" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">User email</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" value="@ViewBag.UserEmail" name="userEmail" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Flight number</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" value="@ViewBag.FlightNumber" name="flightNumber" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Class name</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" value="@ViewBag.ClassName" name="className" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Plane name</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" value="@ViewBag.PlaneName" name="planeName" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Sorting</span>
+        </div>
+        <select class="custom-select" name="sort" id="inputGroupSelect01" asp-items="@ViewBag.Sort"></select>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Purchase date from</span>
+        </div>
+        <input type="date" class="form-control" aria-label="Default" value="@ViewBag.DateFrom.ToString('yyyy-MM-dd')" name="dateFrom" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Purchase date to</span>
+        </div>
+        <input type="date" class="form-control" aria-label="Default" value="@ViewBag.DateTo.ToString('yyyy-MM-dd')" name="dateTo" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
