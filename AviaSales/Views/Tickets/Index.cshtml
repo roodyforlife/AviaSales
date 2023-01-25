@@ -9,6 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -19,7 +20,16 @@
                 @Html.DisplayNameFor(model => model.PurchaseDate)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.SeatNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plane)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class)
             </th>
             <th></th>
         </tr>
@@ -34,7 +44,16 @@
                 @Html.DisplayFor(modelItem => item.PurchaseDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Name)
+                @Html.DisplayFor(modelItem => item.SeatNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plane.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |

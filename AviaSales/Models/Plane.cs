@@ -13,6 +13,6 @@ namespace AviaSales.Models
         [StringLength(200, MinimumLength = 2, ErrorMessage = "Field entered incorrectly")]
         public string Name { get; set; }
         public List<Flight> Flights { get; set; }
-        public List<Seat> Seats { get; set; }
+        public  List<Ticket> Tickets { get; set; }
     }
 }

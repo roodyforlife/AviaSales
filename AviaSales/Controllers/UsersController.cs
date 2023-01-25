@@ -34,7 +34,6 @@ namespace AviaSales.Controllers
             }
 
             var user = await _context.Users
-                .Include(x => x.Tickets)
                 .FirstOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
@@ -59,7 +58,6 @@ namespace AviaSales.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.RegistrationDate = DateTime.Now;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

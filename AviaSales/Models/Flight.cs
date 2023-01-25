@@ -29,6 +29,5 @@ namespace AviaSales.Models
         public DateTime ActualArrival { get; set; }
         [Required(ErrorMessage = "This is a required field")]
         public int Cost { get; set; }
-        public List<FlightTicket> FlightTickets { get; set; }
     }
 }

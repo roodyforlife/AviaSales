@@ -34,8 +34,6 @@ namespace AviaSales.Controllers
             }
 
             var airport = await _context.Airports
-                .Include(x => x.Departures)
-                .Include(x => x.Arrivals)
                 .FirstOrDefaultAsync(m => m.AirportId == id);
             if (airport == null)
             {

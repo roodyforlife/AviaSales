@@ -34,8 +34,6 @@ namespace AviaSales.Controllers
             }
 
             var plane = await _context.Planes
-                .Include(x => x.Seats)
-                .ThenInclude(x => x.Class)
                 .FirstOrDefaultAsync(m => m.PlaneId == id);
             if (plane == null)
             {

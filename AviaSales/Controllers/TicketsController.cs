@@ -22,7 +22,7 @@ namespace AviaSales.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var dataBaseContext = _context.Tickets.Include(t => t.User);
+            var dataBaseContext = _context.Tickets.Include(t => t.Class).Include(t => t.Plane).Include(t => t.User);
             return View(await dataBaseContext.ToListAsync());
         }
 
@@ -35,9 +35,9 @@ namespace AviaSales.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.Class)
+                .Include(t => t.Plane)
                 .Include(t => t.User)
-                .Include(x => x.TicketFoods)
-                .ThenInclude(x => x.Food)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
             if (ticket == null)
             {
@@ -50,7 +50,9 @@ namespace AviaSales.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Name");
+            ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name");
+            ViewData["PlaneId"] = new SelectList(_context.Planes, "PlaneId", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
             return View();
         }
 
@@ -59,16 +61,17 @@ namespace AviaSales.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketId,PurchaseDate,UserId")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketId,PurchaseDate,SeatNumber,UserId,PlaneId,ClassId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                ticket.PurchaseDate = DateTime.Now;
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Name", ticket.UserId);
+            ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", ticket.ClassId);
+            ViewData["PlaneId"] = new SelectList(_context.Planes, "PlaneId", "Name", ticket.PlaneId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", ticket.UserId);
             return View(ticket);
         }
 
@@ -85,7 +88,9 @@ namespace AviaSales.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Name", ticket.UserId);
+            ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", ticket.ClassId);
+            ViewData["PlaneId"] = new SelectList(_context.Planes, "PlaneId", "Name", ticket.PlaneId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", ticket.UserId);
             return View(ticket);
         }
 
@@ -94,7 +99,7 @@ namespace AviaSales.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketId,PurchaseDate,UserId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("TicketId,PurchaseDate,SeatNumber,UserId,PlaneId,ClassId")] Ticket ticket)
         {
             if (id != ticket.TicketId)
             {
@@ -121,7 +126,9 @@ namespace AviaSales.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Name", ticket.UserId);
+            ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", ticket.ClassId);
+            ViewData["PlaneId"] = new SelectList(_context.Planes, "PlaneId", "Name", ticket.PlaneId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", ticket.UserId);
             return View(ticket);
         }
 
@@ -134,6 +141,8 @@ namespace AviaSales.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.Class)
+                .Include(t => t.Plane)
                 .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
             if (ticket == null)
