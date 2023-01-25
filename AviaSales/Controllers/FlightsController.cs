@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AviaSales.DataBase;
 using AviaSales.Models;
+using AviaSales.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace AviaSales.Controllers
 {
@@ -20,9 +23,85 @@ namespace AviaSales.Controllers
         }
 
         // GET: Flights
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string flightNumber, string planeName, int costFrom, int costTo, DateTime departureDateFrom,
+            DateTime departureDateTo, FlightSort sort = FlightSort.FlightNumberAsc)
         {
-            var dataBaseContext = _context.Flights.Include(f => f.ArrivalAirport).Include(f => f.DepartureAirport).Include(f => f.Plane);
+            IQueryable<Flight> dataBaseContext = _context.Flights.Include(f => f.ArrivalAirport).Include(f => f.DepartureAirport).Include(f => f.Plane);
+
+            if (!String.IsNullOrEmpty(flightNumber))
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.FlightNumber.Contains(flightNumber));
+            }
+
+            if (!String.IsNullOrEmpty(planeName))
+            {
+                dataBaseContext = dataBaseContext.Where(x => x.Plane.Name.Contains(planeName));
+            }
+
+            if (costTo == 0)
+            {
+                if(dataBaseContext.Count() > 0)
+                costTo = dataBaseContext.Max(x => x.Cost);
+            }
+
+            dataBaseContext = dataBaseContext.Where(x => x.Cost >= costFrom);
+            dataBaseContext = dataBaseContext.Where(x => x.Cost <= costTo);
+
+            if (departureDateTo.Year == 1)
+            {
+                departureDateTo = DateTime.Now;
+            }
+
+            dataBaseContext = dataBaseContext.Where(x => x.DepartureDate >= departureDateFrom);
+            dataBaseContext = dataBaseContext.Where(x => x.DepartureDate <= departureDateTo);
+
+            switch (sort)
+            {
+                case FlightSort.FlightNumberDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.FlightNumber);
+                    break;
+                case FlightSort.DepartureDateAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.DepartureDate);
+                    break;
+                case FlightSort.DepartureDateDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.DepartureDate);
+                    break;
+                case FlightSort.CostAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.Cost);
+                    break;
+                case FlightSort.CostDesc:
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.Cost);
+                    break;
+                case FlightSort.DepartureAirportAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.DepartureAirport.Name);
+                    break;
+                case FlightSort.ArrivalAirportAsc:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.ArrivalAirport.Name);
+                    break;
+                default:
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.FlightNumber);
+                    break;
+            }
+
+            ViewBag.Sort = (List<SelectListItem>)Enum.GetValues(typeof(FlightSort)).Cast<FlightSort>()
+               .Select(x => new SelectListItem
+               {
+                   Text = x.GetType()
+           .GetMember(x.ToString())
+           .FirstOrDefault()
+           .GetCustomAttribute<DisplayAttribute>()?
+           .GetName(),
+                   Value = x.ToString(),
+                   Selected = (x == sort)
+               }).ToList();
+
+            ViewBag.FlightNumber = flightNumber;
+            ViewBag.PlaneName = planeName;
+            ViewBag.CostFrom = costFrom;
+            ViewBag.CostTo = costTo;
+            ViewBag.DepartureDateFrom = departureDateFrom;
+            ViewBag.DepartureDateTo = departureDateTo;
+
             return View(await dataBaseContext.ToListAsync());
         }
 

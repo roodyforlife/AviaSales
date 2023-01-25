@@ -10,6 +10,46 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<form asp-action="Index" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Flight number</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" value="@ViewBag.FlightNumber" name="flightNumber" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Plane name</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" value="@ViewBag.PlaneName" name="planeName" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Cost from</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Default" value="@ViewBag.CostFrom" name="costFrom" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Cost to</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Default" value="@ViewBag.CostTo" name="costTo" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Departure date from</span>
+        </div>
+        <input type="date" class="form-control" aria-label="Default" value="@ViewBag.DepartureDateFrom.ToString('yyyy-MM-dd')" name="departureDateFrom" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Departure date to</span>
+        </div>
+        <input type="date" class="form-control" aria-label="Default" value="@ViewBag.DepartureDateTo.ToString('yyyy-MM-dd')" name="departureDateTo" aria-describedby="inputGroup-sizing-default">
+        <div class="input-group-prepend ml-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Sorting</span>
+        </div>
+        <select class="custom-select" name="sort" id="inputGroupSelect01" asp-items="@ViewBag.Sort"></select>
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
 <div class="form-group">
     <a class="btn btn-primary" asp-action="Request" asp-route-request="Select FlightNumber, DepartureDate, PLanes.Name as 'Plane name', COUNT(Tickets.TicketId) as 'Count of tickets in plane' from Flights
 left join Planes on Planes.PlaneId = Flights.PlaneId

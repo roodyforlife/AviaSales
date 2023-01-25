@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AviaSales.DataBase;
 using AviaSales.Models;
+using AviaSales.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace AviaSales.Controllers
 {
@@ -20,9 +23,70 @@ namespace AviaSales.Controllers
         }
 
         // GET: Airports
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string name, string city, string postcode, AirportSort sort = AirportSort.NameAsc)
         {
-            return View(await _context.Airports.ToListAsync());
+            IQueryable<Airport> airports = _context.Airports;
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                airports = airports.Where(x => x.Name.Contains(name));
+            }
+
+            if (!String.IsNullOrEmpty(city))
+            {
+                airports = airports.Where(x => x.City.Contains(city));
+            }
+
+            if (!String.IsNullOrEmpty(postcode))
+            {
+                airports = airports.Where(x => x.Postcode.Contains(postcode));
+            }
+
+            switch (sort)
+            {
+                case AirportSort.NameDesc:
+                    airports = airports.OrderByDescending(x => x.Name);
+                    break;
+                case AirportSort.CityAsc:
+                    airports = airports.OrderBy(x => x.City);
+                    break;
+                case AirportSort.CityDesc:
+                    airports = airports.OrderByDescending(x => x.City);
+                    break;
+                case AirportSort.AddressAsc:
+                    airports = airports.OrderBy(x => x.Address);
+                    break;
+                case AirportSort.AddressDesc:
+                    airports = airports.OrderByDescending(x => x.Address);
+                    break;
+                case AirportSort.StateAsc:
+                    airports = airports.OrderBy(x => x.State);
+                    break;
+                case AirportSort.StateDesc:
+                    airports = airports.OrderByDescending(x => x.State);
+                    break;
+                default:
+                    airports = airports.OrderBy(x => x.Name);
+                    break;
+            }
+
+            ViewBag.Sort = (List<SelectListItem>)Enum.GetValues(typeof(AirportSort)).Cast<AirportSort>()
+               .Select(x => new SelectListItem
+               {
+                   Text = x.GetType()
+           .GetMember(x.ToString())
+           .FirstOrDefault()
+           .GetCustomAttribute<DisplayAttribute>()?
+           .GetName(),
+                   Value = x.ToString(),
+                   Selected = (x == sort)
+               }).ToList();
+
+            ViewBag.Name = name;
+            ViewBag.City = city;
+            ViewBag.Postcode = postcode;
+
+            return View(await airports.ToListAsync());
         }
 
         // GET: Airports/Details/5
