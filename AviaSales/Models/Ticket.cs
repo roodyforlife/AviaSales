@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace AviaSales.Models
         [Required(ErrorMessage = "This is a required field")]
         public int SeatNumber { get; set; }
         public User User { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? UserId { get; set; }
         public Plane Plane { get; set; }
         public int PlaneId { get; set; }
