@@ -66,19 +66,21 @@ namespace AviaSales.Controllers
         {
             if (ModelState.IsValid)
             {
+                _context.Add(flight);
+                await _context.SaveChangesAsync();
                 List<Ticket> newTickets = new List<Ticket>();
                 for (int i = 1; i <= 30; i++)
                 {
                     newTickets.Add(new Ticket()
                     {
                         SeatNumber = i,
+                        PurchaseDate = DateTime.Now,
                         Class = _context.Classes.FirstOrDefault(),
-                        Plane = _context.Planes.FirstOrDefault(x => x.PlaneId == flight.PlaneId)
+                        Flight = _context.Flights.FirstOrDefault(x => x.DepartureDate == flight.DepartureDate)
                     });
                 }
 
                 await _context.AddRangeAsync(newTickets);
-                _context.Add(flight);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

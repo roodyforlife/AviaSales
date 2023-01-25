@@ -15,28 +15,34 @@
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
-                Flight number
+                @Html.DisplayNameFor(model => model.Flight.FlightNumber)
             </dt>
             <dd class="col-sm-10">
-                @ViewBag.Flight.FlightNumber
+                @Html.DisplayFor(model => model.Flight.FlightNumber)
             </dd>
             <dt class="col-sm-2">
-                Departure Airport
+                @Html.DisplayNameFor(model => model.Flight.DepartureAirport)
             </dt>
             <dd class="col-sm-10">
-                @ViewBag.Flight.DepartureAirport.Name
+                @Html.DisplayFor(model => model.Flight.DepartureAirport.Name)
             </dd>
             <dt class="col-sm-2">
-                Arrival Airport
+                @Html.DisplayNameFor(model => model.Flight.ArrivalAirport)
             </dt>
             <dd class="col-sm-10">
-                @ViewBag.Flight.ArrivalAirport.Name
+                @Html.DisplayFor(model => model.Flight.ArrivalAirport.Name)
             </dd>
             <dt class="col-sm-2">
-                Departure date
+                @Html.DisplayNameFor(model => model.Flight.DepartureDate)
             </dt>
             <dd class="col-sm-10">
-                @ViewBag.Flight.DepartureDate
+                @Html.DisplayFor(model => model.Flight.DepartureDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Flight.ArrivalDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Flight.ArrivalDate)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.PurchaseDate)
@@ -69,10 +75,10 @@
                 @Html.DisplayFor(model => model.User.Telephone)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Plane)
+                @Html.DisplayNameFor(model => model.Flight)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plane.Name)
+                @Html.DisplayFor(model => model.Flight.FlightNumber)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Class)

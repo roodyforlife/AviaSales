@@ -16,8 +16,8 @@ namespace AviaSales.Models
         public User User { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? UserId { get; set; }
-        public Plane Plane { get; set; }
-        public int PlaneId { get; set; }
+        public Flight Flight { get; set; }
+        public int FlightId { get; set; }
         public Class Class { get; set; }
         public int ClassId { get; set; }
         public List<TicketFood> TicketFoods { get; set; }

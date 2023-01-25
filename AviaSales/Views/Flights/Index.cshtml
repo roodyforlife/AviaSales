@@ -13,7 +13,7 @@
 <div class="form-group">
     <a class="btn btn-primary" asp-action="Request" asp-route-request="Select FlightNumber, DepartureDate, PLanes.Name as 'Plane name', COUNT(Tickets.TicketId) as 'Count of tickets in plane' from Flights
 left join Planes on Planes.PlaneId = Flights.PlaneId
-left join Tickets on Tickets.PlaneId = Planes.PlaneId
+left join Tickets on Tickets.FlightId = Flights.FlightId
 Where Tickets.UserId is Null
 group by FlightNumber, DepartureDate, PLanes.Name" asp-controller="Home">Запит на отримання рейсів (номер рейсу, дата вильоту, назва літаку, кількість квитків які залишились для продажу)</a>
 </div>
@@ -21,7 +21,7 @@ group by FlightNumber, DepartureDate, PLanes.Name" asp-controller="Home">Зап�
 <div class="form-group">
     <a class="btn btn-primary" asp-action="Request" asp-route-request="Select FlightNumber, Classes.Name as 'Class name', COUNT(Tickets.TicketId) as 'Count of tickets' from Flights
 left join PLanes on Planes.PlaneId = Flights.PlaneId
-left join Tickets on Tickets.PlaneId = PLanes.PlaneId
+left join Tickets on Tickets.FlightId = Flights.FlightId
 join Classes on Classes.ClassId = Tickets.ClassId
 Where Tickets.UserId is not null
 group by FlightNumber, Classes.Name order by FlightNumber DESC" asp-controller="Home">Запит на отримання рейсів, де буде виведено номер рейсу, дату вильоту, класи даного рейсу, які були куплені, кількість куплених квитків даного класу</a>

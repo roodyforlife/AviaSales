@@ -84,7 +84,7 @@
                 @Html.DisplayNameFor(model => model.Tickets.First().User)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets.First().Plane)
+                @Html.DisplayNameFor(model => model.Tickets.First().Flight)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Tickets.First().Class)
@@ -108,7 +108,7 @@
                     @Html.DisplayFor(modelItem => item.User.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Plane.Name)
+                    @Html.DisplayFor(modelItem => item.Flight.FlightNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Class.Name)

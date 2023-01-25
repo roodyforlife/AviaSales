@@ -13,7 +13,7 @@
 <div class="form-group">
     <a class="btn btn-primary" asp-action="Request" asp-route-request="Select Planes.Name as 'PLane name', FlightNumber, SUM(TicketFoods.Quantity) as 'Quantity' from Planes
 left join Flights on Flights.PlaneId = Planes.PlaneId
-left join Tickets on Tickets.PlaneId = Planes.PlaneId
+left join Tickets on Tickets.FlightId = Flights.FlightId
 left join TicketFoods on TicketFoods.TicketId = Tickets.TicketId
 left join Foods on Foods.FoodId = TicketFoods.FoodId
 Where Tickets.UserId is not null
