@@ -38,6 +38,7 @@ namespace AviaSales.Controllers
                 .Include(f => f.ArrivalAirport)
                 .Include(f => f.DepartureAirport)
                 .Include(f => f.Plane)
+                .ThenInclude(x => x.Tickets)
                 .FirstOrDefaultAsync(m => m.FlightId == id);
             if (flight == null)
             {

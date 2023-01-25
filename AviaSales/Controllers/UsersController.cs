@@ -34,6 +34,7 @@ namespace AviaSales.Controllers
             }
 
             var user = await _context.Users
+                .Include(x => x.Tickets)
                 .FirstOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {

@@ -38,7 +38,12 @@ namespace AviaSales.Controllers
                 .Include(t => t.Class)
                 .Include(t => t.Plane)
                 .Include(t => t.User)
+                .Include(x => x.TicketFoods)
+                .ThenInclude(x => x.Food)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
+
+            ViewBag.Flight = _context.Flights.Include(x => x.DepartureAirport).Include(x => x.ArrivalAirport).FirstOrDefault(x => x.PlaneId == ticket.PlaneId);
+
             if (ticket == null)
             {
                 return NotFound();

@@ -25,75 +25,82 @@ join Classes on Classes.ClassId = Tickets.ClassId
 group by FlightNumber, Classes.Name order by FlightNumber DESC" asp-controller="Home">Запит на отримання рейсів, де буде виведено номер рейсу, дату вильоту, класи даного рейсу, які були куплені, кількість куплених квитків даного класу</a>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FlightNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartureDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArrivalDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartureAirport)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArrivalAirport)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Plane)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualDeparture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualArrival)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlightNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartureDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArrivalDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartureAirport.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArrivalAirport.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Plane.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActualDeparture)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActualArrival)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FlightId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FlightId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="form-group">
+    <button class="btn btn-primary" onclick="createPDF('Flights')">Print flights</button>
+</div>
+
+<div id="print">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FlightNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepartureDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArrivalDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepartureAirport)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArrivalAirport)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Plane)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActualDeparture)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActualArrival)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cost)
+                </th>
+                <th class="createPdfBlock"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FlightNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartureDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArrivalDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartureAirport.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArrivalAirport.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Plane.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActualDeparture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActualArrival)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost)
+                    </td>
+                    <td class="createPdfBlock">
+                        <a asp-action="Edit" asp-route-id="@item.FlightId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.FlightId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
