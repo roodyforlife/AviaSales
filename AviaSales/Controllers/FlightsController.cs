@@ -163,6 +163,7 @@ namespace AviaSales.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ArrivalAirportId"] = new SelectList(_context.Airports, "AirportId", "Name", flight.ArrivalAirportId);
             ViewData["DepartureAirportId"] = new SelectList(_context.Airports, "AirportId", "Name", flight.DepartureAirportId);
             ViewData["PlaneId"] = new SelectList(_context.Planes, "PlaneId", "Name", flight.PlaneId);

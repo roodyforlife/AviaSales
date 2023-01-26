@@ -86,6 +86,12 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Class.Name)
             </dd>
+            <dt class="col-sm-2">
+                <h4>Final cost:</h4>
+            </dt>
+            <dd class="col-sm-10">
+                <span style="color: red;">@(Model.Flight.Cost + (Model.TicketFoods.Sum(x => x.Quantity * x.Food.Cost)))</span>
+            </dd>
         </dl>
 
         <div class="createPdfBlock">
@@ -115,7 +121,7 @@
                             @Html.DisplayFor(modelItem => item.Food.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Food.Cost)
+                            @(item.Food.Cost * item.Quantity)
                         </td>
                     </tr>
                 }

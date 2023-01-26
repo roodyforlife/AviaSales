@@ -25,7 +25,7 @@ namespace AviaSales.Models
         public int ArrivalAirportId { get; set; }
         public Plane Plane { get; set; }
         public int PlaneId { get; set; }
-        public DateTime ActualDeparture { get; set; }
+        public DateTime ActualDeparture { get; set; } // not Required
         public DateTime ActualArrival { get; set; }
         [Required(ErrorMessage = "This is a required field")]
         public int Cost { get; set; }

@@ -150,9 +150,16 @@ namespace AviaSales.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            List<SelectListItem> users = new List<SelectListItem>();
+            users.Add(new SelectListItem() { Text = "Not chosen" });
+            foreach(User user in _context.Users)
+            {
+                users.Add(new SelectListItem() { Value = user.UserId.ToString(), Text = user.Email });
+            }
+
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name");
             ViewData["FlightId"] = new SelectList(_context.Flights, "FlightId", "FlightNumber");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
+            ViewData["UserId"] = new SelectList(users, "Value", "Text");
             return View();
         }
 
@@ -163,9 +170,12 @@ namespace AviaSales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TicketId,PurchaseDate,SeatNumber,UserId,FlightId,ClassId")] Ticket ticket)
         {
-            if (_context.Users.FirstOrDefault(x => x.UserId == ticket.UserId).IsBanned)
+            if (ticket.UserId is not null)
             {
-                ModelState.AddModelError("UserId", "This user has been banned");
+                if (_context.Users.FirstOrDefault(x => x.UserId == ticket.UserId).IsBanned)
+                {
+                    ModelState.AddModelError("UserId", "This user has been banned");
+                }
             }
 
             if (ModelState.IsValid)
@@ -174,9 +184,17 @@ namespace AviaSales.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            List<SelectListItem> users = new List<SelectListItem>();
+            users.Add(new SelectListItem() { Text = "Not chosen" });
+            foreach (User user in _context.Users)
+            {
+                users.Add(new SelectListItem() { Value = user.UserId.ToString(), Text = user.Email });
+            }
+
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", ticket.ClassId);
             ViewData["FlightId"] = new SelectList(_context.Flights, "FlightId", "FlightNumber", ticket.FlightId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", ticket.UserId);
+            ViewData["UserId"] = new SelectList(users, "Value", "Text", ticket.UserId);
             return View(ticket);
         }
 
@@ -192,10 +210,19 @@ namespace AviaSales.Controllers
             if (ticket == null)
             {
                 return NotFound();
+            
             }
+
+            List<SelectListItem> users = new List<SelectListItem>();
+            users.Add(new SelectListItem() { Text = "Not chosen" });
+            foreach (User user in _context.Users)
+            {
+                users.Add(new SelectListItem() { Value = user.UserId.ToString(), Text = user.Email });
+            }
+
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", ticket.ClassId);
             ViewData["FlightId"] = new SelectList(_context.Flights, "FlightId", "FlightNumber", ticket.FlightId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", ticket.UserId);
+            ViewData["UserId"] = new SelectList(users, "Value", "Text", ticket.UserId);
             return View(ticket);
         }
 
@@ -211,9 +238,12 @@ namespace AviaSales.Controllers
                 return NotFound();
             }
 
-            if (_context.Users.FirstOrDefault(x => x.UserId == ticket.UserId).IsBanned)
+            if (ticket.UserId is not null)
             {
-                ModelState.AddModelError("UserId", "This user has been banned");
+                if (_context.Users.FirstOrDefault(x => x.UserId == ticket.UserId).IsBanned)
+                {
+                    ModelState.AddModelError("UserId", "This user has been banned");
+                }
             }
 
             if (ModelState.IsValid)
@@ -236,9 +266,17 @@ namespace AviaSales.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            List<SelectListItem> users = new List<SelectListItem>();
+            users.Add(new SelectListItem() { Text = "Not chosen" });
+            foreach (User user in _context.Users)
+            {
+                users.Add(new SelectListItem() { Value = user.UserId.ToString(), Text = user.Email });
+            }
+
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", ticket.ClassId);
             ViewData["FlightId"] = new SelectList(_context.Flights, "FlightId", "FlightNumber", ticket.FlightId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", ticket.UserId);
+            ViewData["UserId"] = new SelectList(users, "Value", "Text", ticket.UserId);
             return View(ticket);
         }
 
