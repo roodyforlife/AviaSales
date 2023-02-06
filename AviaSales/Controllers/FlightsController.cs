@@ -61,10 +61,10 @@ namespace AviaSales.Controllers
                     dataBaseContext = dataBaseContext.OrderByDescending(x => x.FlightNumber);
                     break;
                 case FlightSort.DepartureDateAsc:
-                    dataBaseContext = dataBaseContext.OrderBy(x => x.DepartureDate);
+                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.DepartureDate);
                     break;
                 case FlightSort.DepartureDateDesc:
-                    dataBaseContext = dataBaseContext.OrderByDescending(x => x.DepartureDate);
+                    dataBaseContext = dataBaseContext.OrderBy(x => x.DepartureDate);
                     break;
                 case FlightSort.CostAsc:
                     dataBaseContext = dataBaseContext.OrderBy(x => x.Cost);
