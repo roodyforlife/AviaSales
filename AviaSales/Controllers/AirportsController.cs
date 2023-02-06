@@ -164,7 +164,7 @@ namespace AviaSales.Controllers
                 return NotFound();
             }
 
-            if (_context.Airports.Where(x => x.Name == airport.Name).Count() != 0)
+            if (_context.Airports.Where(x => x.Name == airport.Name && x.AirportId != airport.AirportId).Count() != 0)
             {
                 ModelState.AddModelError("Name", "Name already taken");
             }
