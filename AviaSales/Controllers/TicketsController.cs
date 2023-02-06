@@ -178,6 +178,12 @@ namespace AviaSales.Controllers
                 }
             }
 
+            if (await _context.Tickets.FirstOrDefaultAsync(x => x.SeatNumber == ticket.SeatNumber
+            && x.FlightId == ticket.FlightId) is not null)
+            {
+                ModelState.AddModelError("SeatNumber", "Seat is taken");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(ticket);

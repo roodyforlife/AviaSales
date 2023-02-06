@@ -39,10 +39,10 @@
 </form>
 
 <div class="form-group">
-    <a class="btn btn-primary" asp-action="Request" asp-route-request="Select Airports.Name, CONCAT(Airports.State, ' ', Airports.City, ' ', Airports.Address, ' ', Airports.Postcode) as Address, Flights.DepartureDate, COUNT(Airports.AirportId) as 'Count of departures today' from Airports
+    <a class="btn btn-primary" asp-action="Request" asp-route-request="Select Airports.Name, CONCAT(Airports.State, ' ', Airports.City, ' ', Airports.Address, ' ', Airports.Postcode) as Address, COUNT(Airports.AirportId) as 'Count of departures today' from Airports
 left join Flights on Flights.DepartureAirportId = Airports.AirportId
 where Flights.DepartureDate BETWEEN (convert(varchar, getdate(), 23) + ' 00:00:00') AND (convert(varchar, getdate(), 23) + ' 23:59:59')
-group by Airports.Name, Airports.State, Airports.City, Airports.Address, Airports.Postcode, Flights.DepartureDate" asp-controller="Home">Запит на отримання аеропортів, у яких є відправлення сьогодні, в результаті буде виведено назва аеропорту, адресу аеропорту, час відправлення та кількість вильотів сьогодні</a>
+group by Airports.Name, Airports.State, Airports.City, Airports.Address, Airports.Postcode" asp-controller="Home">Запит на отримання аеропортів, у яких є відправлення сьогодні, в результаті буде виведено назва аеропорту, адресу аеропорту та кількість вильотів сьогодні</a>
 </div>
 
 <table class="table">
